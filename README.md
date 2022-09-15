@@ -2,9 +2,18 @@
 
 Here we have a Dockerfile to create a container with unimrcp and swig-wrapper.
 
-To start the container do:
+You will need to have docker and jq installed:
+```
+apt install docker jq
+```
+
+To build the container image:
 ```
 ./build_image.sh
+```
+
+To start the container do:
+```
 ./start_container.sh
 ```
 
