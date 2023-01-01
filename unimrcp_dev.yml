@@ -1,0 +1,11 @@
+name: unimrcp_dev
+root: ~/
+
+windows:
+  - unimrcpserver:
+    - cd /usr/local/unimrcp/bin
+    - ./unimrcpserver
+  - dev:
+    - cd ~/host/unimrcp_experiments
+  - sngrep:
+    - sudo sngrep -d any
