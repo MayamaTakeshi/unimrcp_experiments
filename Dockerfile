@@ -55,7 +55,7 @@ RUN cd ~/src \
 RUN cd ~/src/git \
   && git clone https://github.com/unispeech/unimrcp \
   && cd unimrcp \
-  && git checkout unimrcp-1.7.0 \
+  && git checkout unimrcp-1.8.0 \
   && ./bootstrap \
   && ./configure \
   && make \
