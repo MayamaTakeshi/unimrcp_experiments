@@ -7,7 +7,7 @@ import threading
 # UniMRCP client root directory
 ROOT_DIR = "/usr/local/unimrcp"
 PCM_OUT_FILE = "UniSynth.pcm"
-MRCP_PROFILE = "uni1"
+MRCP_PROFILE = "uni2"
 
 # Import UniMRCP symbols
 from UniMRCP import *

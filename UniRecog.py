@@ -6,7 +6,7 @@ import threading
 
 
 ROOT_DIR = "/usr/local/unimrcp"
-MRCP_PROFILE = "uni1"
+MRCP_PROFILE = "uni2"
 
 # Types of streaming
 ST_FRAME_BY_FRAME = 0
@@ -17,11 +17,8 @@ ST_FILE = 3
 # Choose type of streaming to demonstrate
 streamType = ST_FILE
 
-
 # Import UniMRCP symbols
 from UniMRCP import *
-
-print(dir(UniMRCPStreamRxMemory))
 
 # User-defined logger
 class UniRecogLogger(UniMRCPLogger):
