@@ -1,0 +1,5 @@
+======================================
+2023/01/01 takeshi:
+
+To remove old image build cache I used:
+  docker builder prune

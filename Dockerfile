@@ -85,5 +85,7 @@ RUN sudo sed -i -r 's|<ip type="auto"/>|<ip type="lo"/>|' /usr/local/unimrcp/con
 
 RUN echo "PS1='\033[01;32m\]\u@unimrcp_dev\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '" >> ~/.bashrc
 
+RUN mv ~/src/git/swig-wrapper/Python/*.so ~/src/git/swig-wrapper/Python/wrapper/
+
 CMD ["bash"]
 
