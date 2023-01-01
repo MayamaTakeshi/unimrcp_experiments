@@ -124,3 +124,14 @@ PYTHONPATH=~/src/git/swig-wrapper/Python/wrapper ~/host/unimrcp_experiments/UniR
 
 But again, the output for both synth and recog is bogus as we are using the demo plugins.
 
+
+## Starting a working session
+
+To simplify opening apps, there is a tmuxinator session definition file that can be used like this:
+```
+cd ~/host/unimrcp_experiments
+tmuxinator start -p unimrcp_dev.yml
+```
+
+The above will open a tmux session and will start unimrcpserver and sngrep with MRCP parsing support.
+
