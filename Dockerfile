@@ -78,8 +78,12 @@ RUN sudo apt install -y build-essential automake autoconf libtool libspeex-dev l
 
 RUN . ~/.nvm/nvm.sh && npm install -g sip-lab
 
-RUN sudo chown $user_name:$user_name -R ~/.config # hack to solve issue with npm update (see https://github.com/npm/npm/issues/17946)
+#RUN sudo chown $user_name:$user_name -R ~/.config # hack to solve issue with npm update (see https://github.com/npm/npm/issues/17946)
 
+RUN sudo sed -i -r 's|<ip type="auto"/>|<ip type="lo"/>|' /usr/local/unimrcp/conf/unimrcpserver.xml
+RUN sudo sed -i -r 's|<ip type="auto"/>|<ip type="lo"/>|' /usr/local/unimrcp/conf/unimrcpclient.xml
+
+RUN echo "PS1='\033[01;32m\]\u@unimrcp_dev\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '" >> ~/.bashrc
 
 CMD ["bash"]
 
