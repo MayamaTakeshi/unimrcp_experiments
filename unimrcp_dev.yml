@@ -3,9 +3,15 @@ root: ~/
 
 windows:
   - unimrcpserver:
+    - cd ~/src/unimrcp && sudo make install
+    - sudo /sbin/ldconfig
+    - sudo sed -i -r 's|<ip type="auto"/>|<ip type="lo"/>|' /usr/local/unimrcp/conf/unimrcpserver.xml
+    - sudo sed -i -r 's|<ip type="auto"/>|<ip type="lo"/>|' /usr/local/unimrcp/conf/unimrcpclient.xml
+    - cp -f ~/src/git/swig-wrapper/Python/*.so ~/src/git/swig-wrapper/Python/wrapper/
+    - cd bin
     - cd /usr/local/unimrcp/bin
     - ./unimrcpserver
-  - dev:
-    - cd ~/host/unimrcp_experiments
   - sngrep:
     - sudo sngrep -d any
+  - dev:
+    - cd ~/src/unimrcp_experiments

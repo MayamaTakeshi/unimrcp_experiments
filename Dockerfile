@@ -9,8 +9,8 @@ ARG git_user_email
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 
-RUN apt-get update && apt-get install -y sudo tmux curl git-core subversion gnupg locales wget nano vim jq tree rsyslog python-dev python-mysqldb net-tools tcpdump ngrep swig build-essential cmake libtool automake autoconf pkg-config libssl-dev
-
+RUN apt-get update && apt-get install -y autoconf automake build-essential cmake curl git-core gnupg jq libavdevice-dev libboost-dev libncurses5-dev libopencore-amrnb-dev libopencore-amrwb-dev libopus-dev libpcap-dev libsdl2-dev libspeex-dev libssl-dev libswscale-dev libtiff-dev libtool libv4l-dev libvo-amrwbenc-dev locales nano net-tools ngrep pkg-config python-dev python-mysqldb rsyslog ruby subversion sudo swig tcpdump tmux tree uuid-dev vim wget
+ 
 # Create the user
 RUN groupadd --gid $USER_GID $user_name \
     && useradd --uid $USER_UID --gid $USER_GID -m $user_name
@@ -46,27 +46,11 @@ EOF
 
 RUN mkdir -p ~/src/git 
 
-RUN cd ~/src \
+RUN cd ~ \
   && wget --no-check-certificate https://www.unimrcp.org/project/component-view/unimrcp-deps-1-6-0-tar-gz/download -O unimrcp-deps-1.6.0.tar.gz \
   && tar -xzf unimrcp-deps-1.6.0.tar.gz \
   && cd unimrcp-deps-1.6.0 \
   && yes | sudo ./build-dep-libs.sh
-
-RUN cd ~/src/git \
-  && git clone https://github.com/unispeech/unimrcp \
-  && cd unimrcp \
-  && git checkout unimrcp-1.7.0 \
-  && ./bootstrap \
-  && ./configure \
-  && make \
-  && sudo make install
-
-RUN cd ~/src/git \
-  && git clone https://github.com/unispeech/swig-wrapper \
-  && cd swig-wrapper \
-  && git checkout 01af0d80a5dc9a08240095f4d49a377fb28e4c26 \
-  && cmake -D APR_LIBRARY=/usr/local/apr/lib/libapr-1.so -D APR_INCLUDE_DIR=/usr/local/apr/include/apr-1 -D APU_LIBRARY=/usr/local/apr/lib/libaprutil-1.so -D APU_INCLUDE_DIR=/usr/local/apr/include/apr-1 -D UNIMRCP_SOURCE_DIR=/usr/local/src/git/unimrcp -D SOFIA_INCLUDE_DIRS=/usr/include/sofia-sip-1.12 -D WRAP_CPP=OFF -D WRAP_JAVA=OFF -D BUILD_C_EXAMPLE=OFF . \
-  && make
 
 RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
  
@@ -74,18 +58,22 @@ RUN . ~/.nvm/nvm.sh && nvm install v16.17.0
 
 RUN . ~/.nvm/nvm.sh && npm install -g yarn
 
-RUN sudo apt install -y build-essential automake autoconf libtool libspeex-dev libopus-dev libsdl2-dev libavdevice-dev libswscale-dev libv4l-dev libopencore-amrnb-dev libopencore-amrwb-dev libvo-amrwbenc-dev libopus-dev libsdl2-dev libopencore-amrnb-dev libopencore-amrwb-dev libvo-amrwbenc-dev libboost-dev libtiff-dev libpcap-dev libssl-dev uuid-dev
-
 RUN . ~/.nvm/nvm.sh && npm install -g sip-lab
-
-#RUN sudo chown $user_name:$user_name -R ~/.config # hack to solve issue with npm update (see https://github.com/npm/npm/issues/17946)
-
-RUN sudo sed -i -r 's|<ip type="auto"/>|<ip type="lo"/>|' /usr/local/unimrcp/conf/unimrcpserver.xml
-RUN sudo sed -i -r 's|<ip type="auto"/>|<ip type="lo"/>|' /usr/local/unimrcp/conf/unimrcpclient.xml
 
 RUN echo "PS1='\033[01;32m\]\u@unimrcp_dev\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '" >> ~/.bashrc
 
-RUN mv ~/src/git/swig-wrapper/Python/*.so ~/src/git/swig-wrapper/Python/wrapper/
+# Install sngrep with MRCP support
+RUN cd ~/src/git \
+    && git clone https://github.com/MayamaTakeshi/sngrep \
+    && cd sngrep \
+    && git checkout mrcp_support \
+    && ./bootstrap.sh \
+    && ./configure \
+    && make \
+    && sudo make install
+
+# install tmuxinator (old version because Debian 10 uses old ruby)
+RUN sudo gem install tmuxinator -v 1.1.5
 
 CMD ["bash"]
 
