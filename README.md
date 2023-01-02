@@ -16,7 +16,7 @@ You will need to have unimrcp and swig-wrapper git repo clones at the same level
 Basically, fork [unimrcp](https://github.com/unispeech/unimrcp) and [swig-wrapper](https://github.com/unispeech/swig-wrapper) to your github account and then do:
 ```
 cd src
-git clone https://github.com/YOUR_NAME/swig-wrapper
+git clone https://github.com/YOUR_NAME/unimrcp
 git clone https://github.com/YOUR_NAME/swig-wrapper
 ```
 So that you end up with this:
