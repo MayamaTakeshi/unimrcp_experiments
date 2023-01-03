@@ -44,8 +44,6 @@ set softtabstop=4   " Sets the number of columns for a TAB
 set expandtab       " Expand TABs to spaces
 EOF
 
-RUN mkdir -p ~/src/git 
-
 RUN cd ~ \
   && wget --no-check-certificate https://www.unimrcp.org/project/component-view/unimrcp-deps-1-6-0-tar-gz/download -O unimrcp-deps-1.6.0.tar.gz \
   && tar -xzf unimrcp-deps-1.6.0.tar.gz \
@@ -63,7 +61,7 @@ RUN . ~/.nvm/nvm.sh && npm install -g sip-lab
 RUN echo "PS1='\033[01;32m\]\u@unimrcp_dev\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '" >> ~/.bashrc
 
 # Install sngrep with MRCP support
-RUN cd ~/src/git \
+RUN cd ~ \
     && git clone https://github.com/MayamaTakeshi/sngrep \
     && cd sngrep \
     && git checkout mrcp_support \
