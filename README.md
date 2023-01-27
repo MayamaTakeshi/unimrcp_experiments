@@ -63,11 +63,13 @@ The above will open a tmux session and will start unimrcpserver and sngrep with 
 
 ## Testing with mrcp_client:
 
-Then you can use https://github.com/MayamaTakeshi/mrcp_client like this:
+Outside the container (so that you can have access to audio devices), you can use an MRCP client like https://github.com/MayamaTakeshi/mrcp_client
+
+and test Speech Synth:
 ```
 node speechsynth_client.js 127.0.0.1 8060 en-US somevoice "Hello World"
 ```
-or
+or Speech Recog:
 ```
 node speechrecog_client.js 127.0.0.1 8060 en-US artifacts/hello_there.wav builtin:speech/transcribe
 ```
@@ -76,7 +78,7 @@ However the above will actually generate dummy results as unimrcpserver is confi
 
 ## Testing with umc
 
-You can also test with umc. Start it like this:
+Inside the container you can test with umc. Start it like this:
 ```
 cd /usr/local/unimrcp/bin
 ./umc
