@@ -8,6 +8,7 @@ cd ~/src/unimrcp
 ./bootstrap
 ./configure
 make
+sudo rm -fr /usr/local/unimrcp # need to remove existing files
 sudo make install
 
 cd ~/src/swig-wrapper
