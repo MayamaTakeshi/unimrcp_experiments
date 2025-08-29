@@ -53,10 +53,9 @@ At the first time or whenever unimrcp or swig-wrapper code changes do:
 
 ## Starting a working session
 
-To simplify opening apps, there is a tmuxinator session definition file that can be used like this:
+Do:
 ```
-cd ~/host/unimrcp_experiments
-tmuxinator start -p unimrcp_dev.yml
+./tmux_session.sh
 ```
 
 The above will open a tmux session and will start unimrcpserver and sngrep with MRCP parsing support.

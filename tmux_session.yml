@@ -1,9 +1,9 @@
 name: unimrcp_dev
-root: ~/
+root: ~/src/git/unimrcp_experiments
 
 windows:
   - unimrcpserver:
-    - cd ~/src/unimrcp && sudo make install
+    - cd ~/src/git/unimrcp && sudo make install
     - sudo /sbin/ldconfig
     - sudo sed -i -r 's|<ip type="auto"/>|<ip type="lo"/>|' /usr/local/unimrcp/conf/unimrcpserver.xml
     - sudo sed -i -r 's|<ip type="auto"/>|<ip type="lo"/>|' /usr/local/unimrcp/conf/unimrcpclient.xml
@@ -11,7 +11,9 @@ windows:
     - cd bin
     - cd /usr/local/unimrcp/bin
     - ./unimrcpserver
+  - unimrcp/bin
+    - cd /usr/local/unimrcp/bin
   - sngrep:
     - sudo sngrep -d any
   - dev:
-    - cd ~/src/unimrcp_experiments
+    - cd ~/src/git/unimrcp_experiments
