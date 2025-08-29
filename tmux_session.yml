@@ -1,19 +1,16 @@
-name: unimrcp_dev
+name: dev
 root: ~/src/git/unimrcp_experiments
 
 windows:
   - unimrcpserver:
-    - cd ~/src/git/unimrcp && sudo make install
-    - sudo /sbin/ldconfig
     - sudo sed -i -r 's|<ip type="auto"/>|<ip type="lo"/>|' /usr/local/unimrcp/conf/unimrcpserver.xml
     - sudo sed -i -r 's|<ip type="auto"/>|<ip type="lo"/>|' /usr/local/unimrcp/conf/unimrcpclient.xml
     - cp -f ~/src/git/swig-wrapper/Python/*.so ~/src/git/swig-wrapper/Python/wrapper/
-    - cd bin
     - cd /usr/local/unimrcp/bin
     - ./unimrcpserver
-  - unimrcp/bin
+  - "unimrcp/bin":
     - cd /usr/local/unimrcp/bin
-  - sngrep:
-    - sudo sngrep -d any
+  - sngrep2:
+    - sudo sngrep2 -d any
   - dev:
     - cd ~/src/git/unimrcp_experiments

@@ -35,6 +35,52 @@ ln -s `pwd`/src/sngrep /usr/local/bin/sngrep2
 
 EOF
 
+RUN <<EOF
+set -o errexit
+set -o nounset
+set -o pipefail
+
+mkdir -p /root/tmp
+cd /root/tmp
+wget https://unimrcp.org/project/release-view/unimrcp-deps-1-6-0-tar-gz/download -O unimrcp-deps-1.6.0.tar.gz
+tar xf unimrcp-deps-1.6.0.tar.gz
+cd unimrcp-deps-1.6.0
+sudo ./build-dep-libs.sh -s
+EOF
+
+RUN <<EOF
+set -o errexit
+set -o nounset
+set -o pipefail
+
+mkdir -p /root/tmp/
+cd /root/tmp
+git clone https://github.com/MayamaTakeshi/unimrcp.git
+cd unimrcp
+git checkout 9913f23691b3a1b8a7e84be5ba25478031352158
+./bootstrap
+./configure
+make
+sudo rm -fr /usr/local/unimrcp # need to remove existing files
+sudo make install
+EOF
+
+RUN <<EOF
+set -o errexit
+set -o nounset
+set -o pipefail
+
+cd /root/tmp/
+git clone https://github.com/MayamaTakeshi/swig-wrapper.git
+cd swig-wrapper
+git checkout 6e5becaea38418f8ad9909389bba3598b971f39c
+rm -f CMakeCache.txt
+cmake -D APR_LIBRARY=/usr/local/apr/lib/libapr-1.so -D APR_INCLUDE_DIR=/usr/local/apr/include/apr-1 -D APU_LIBRARY=/usr/local/apr/lib/libaprutil-1.so -D APU_INCLUDE_DIR=/usr/local/apr/include/apr-1 -D UNIMRCP_SOURCE_DIR=~/src/unimrcp -D SOFIA_INCLUDE_DIRS=/usr/include/sofia-sip-1.12 -D WRAP_CPP=OFF -D WRAP_JAVA=OFF -D BUILD_C_EXAMPLE=OFF .
+make
+
+sudo /sbin/ldconfig
+EOF
+
 # Create the user
 RUN groupadd --gid $USER_GID $user_name \
     && useradd --uid $USER_UID --gid $USER_GID -m $user_name
@@ -98,3 +144,14 @@ export TZ=Asia/Tokyo
 export TERM=xterm-256color
 . ~/.nvm/nvm.sh
 EOF
+
+RUN <<EOF
+set -o errexit
+set -o nounset
+set -o pipefail
+
+sudo cp -f /root/tmp/swig-wrapper/./Python/_UniMRCP.so ~/src/git/unimrcp_experiments
+sudo cp -f /root/tmp/swig-wrapper/./CSharp/UniMRCP-NET.so ~/src/git/unimrcp_experiments
+sudo /sbin/ldconfig
+EOF
+
