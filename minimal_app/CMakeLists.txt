@@ -5,15 +5,15 @@ project(app)
 add_executable(app main.c)
 
 target_include_directories(app PUBLIC
-    "~/src/unimrcp-deps-1.6.0/libs/apr/include"
-    "~/src/git/unimrcp/platforms/libunimrcp-client/include"
-    "~/src/git/unimrcp/libs/mrcp-client/include"
-    "~/src/git/unimrcp/libs/mrcp-signaling/include"
-    "~/src/git/unimrcp/libs/mrcp/include"
-    "~/src/git/unimrcp/libs/apr-toolkit/include"
-    "~/src/git/unimrcp/libs/mrcpv2-transport/include"
+    "/root/tmp/unimrcp/platforms/libunimrcp-client/include"
+    "/root/tmp/unimrcp/libs/mrcp-client/include"
+    "/root/tmp/unimrcp/libs/mrcp-signaling/include"
+    "/root/tmp/unimrcp/libs/mrcp/include"
+    "/root/tmp/unimrcp/libs/apr-toolkit/include"
+    "/root/tmp/unimrcp/libs/mrcpv2-transport/include"
+    "/usr/local/apr/include/apr-1"
     "/usr/git/local/apr/include/apr-1"
-    "/usr/git/local/unimrcp/include"
+    "/root/tmp/unimrcp/include"
     )
 
 # strangely, "~/src" fails in targeet_link_library so we must pass the USER

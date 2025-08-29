@@ -10,30 +10,13 @@ You will need to have docker and jq installed:
 ```
 apt install git docker jq
 ```
-
-You will need to have unimrcp and swig-wrapper git repo clones at the same level as this repo. 
-
-Basically, fork [unimrcp](https://github.com/unispeech/unimrcp) and [swig-wrapper](https://github.com/unispeech/swig-wrapper) to your github account and then do:
-```
-cd src
-git clone https://github.com/YOUR_NAME/unimrcp
-git clone https://github.com/YOUR_NAME/swig-wrapper
-```
-So that you end up with this:
-
-```
-src
-    \unimrcp_experiments
-    \unimrcp
-    \swig-wrapper 
-```
-
 ## Building the image
 
 To build the container image:
 ```
 ./build_image.sh
 ```
+Be patient as this will take several minutes (more than 7 minutes in my machine).
 
 ## Starting the container
 
@@ -86,42 +69,50 @@ run recog
 
 # Building minimal_app
 
-To build the minimal_app (the app does nothing. It is just a build smoke test) do:
+To build the minimal_app (the app does nothing. It is just a build smoke test to confirm we can compile and link against unimrcp libs) do:
+```
+
+cd minimal_app/
+rm CMakeCache.txt CMakeFiles/ cmake_install.cmake -fr
+cmake -D USER=`whoami` .
+sudo make
+```
+Sample execution:
 
 ```
-takeshi@unimrcp_dev:~$ cd ~/host/unimrcp_experiments/minimal_app/
-takeshi@unimrcp_dev:~/host/unimrcp_experiments/minimal_app$ 
-
-takeshi@unimrcp_dev:~/host/unimrcp_experiments/minimal_app$ rm CMakeCache.txt CMakeFiles/ cmake_install.cmake -fr
-takeshi@unimrcp_dev:~/host/unimrcp_experiments/minimal_app$ cmake -D USER=`whoami` .
--- The C compiler identification is GNU 8.3.0
--- The CXX compiler identification is GNU 8.3.0
--- Check for working C compiler: /usr/bin/cc
--- Check for working C compiler: /usr/bin/cc -- works
+MayamaTakeshi@takeshi-desktop:unimrcp_experiments$ cd minimal_app/
+MayamaTakeshi@takeshi-desktop:minimal_app$ rm CMakeCache.txt CMakeFiles/ cmake_install.cmake -fr
+MayamaTakeshi@takeshi-desktop:minimal_app$ cmake -D USER=`whoami` .
+-- The C compiler identification is GNU 10.2.1
+-- The CXX compiler identification is GNU 10.2.1
 -- Detecting C compiler ABI info
 -- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
 -- Detecting C compile features
 -- Detecting C compile features - done
--- Check for working CXX compiler: /usr/bin/c++
--- Check for working CXX compiler: /usr/bin/c++ -- works
 -- Detecting CXX compiler ABI info
 -- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
 -- Detecting CXX compile features
 -- Detecting CXX compile features - done
 -- Configuring done
 -- Generating done
--- Build files have been written to: /home/takeshi/host/unimrcp_experiments/minimal_app
-takeshi@unimrcp_dev:~/host/unimrcp_experiments/minimal_app$ make
+-- Build files have been written to: /home/MayamaTakeshi/src/git/unimrcp_experiments/minimal_app
+MayamaTakeshi@takeshi-desktop:minimal_app$ sudo make
 Scanning dependencies of target app
 [ 50%] Building C object CMakeFiles/app.dir/main.c.o
 [100%] Linking C executable app
 [100%] Built target app
-
 ```
 
 You can run the app by doing:
 ```
-takeshi@unimrcp_dev:~/host/unimrcp_experiments/minimal_app$ ./app 
+./app
+```
+
+Ex:
+```
+MayamaTakeshi@takeshi-desktop:minimal_app$ ./app 
 OK
 ```
 
