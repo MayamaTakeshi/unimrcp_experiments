@@ -139,7 +139,7 @@ in the host to hear it.
 
 Then to test Speech Recog with the swig-wrapper for python do:
 ```
-PYTHONPATH=~/src/swig-wrapper/Python/wrapper ~/src/unimrcp_experiments/UniRecog.py /usr/local/unimrcp/data/grammar.xml UniSynth.pcm
+sudo PYTHONPATH=/root/tmp/swig-wrapper/Python/wrapper ~/src/git/unimrcp_experiments/UniRecog.py /usr/local/unimrcp/data/grammar.xml UniSynth.pcm
 ```
 
 But again, the output for both synth and recog is bogus as we are using the demo plugins.

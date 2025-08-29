@@ -77,6 +77,7 @@ git checkout 6e5becaea38418f8ad9909389bba3598b971f39c
 rm -f CMakeCache.txt
 cmake -D APR_LIBRARY=/usr/local/apr/lib/libapr-1.so -D APR_INCLUDE_DIR=/usr/local/apr/include/apr-1 -D APU_LIBRARY=/usr/local/apr/lib/libaprutil-1.so -D APU_INCLUDE_DIR=/usr/local/apr/include/apr-1 -D UNIMRCP_SOURCE_DIR=~/src/unimrcp -D SOFIA_INCLUDE_DIRS=/usr/include/sofia-sip-1.12 -D WRAP_CPP=OFF -D WRAP_JAVA=OFF -D BUILD_C_EXAMPLE=OFF .
 make
+cp -f /root/tmp/swig-wrapper/Python/_UniMRCP.so /root/tmp/swig-wrapper/Python/wrapper
 
 sudo /sbin/ldconfig
 EOF
@@ -143,15 +144,5 @@ export PS1='\u@\h:\W\$ '
 export TZ=Asia/Tokyo
 export TERM=xterm-256color
 . ~/.nvm/nvm.sh
-EOF
-
-RUN <<EOF
-set -o errexit
-set -o nounset
-set -o pipefail
-
-sudo cp -f /root/tmp/swig-wrapper/./Python/_UniMRCP.so ~/src/git/unimrcp_experiments
-sudo cp -f /root/tmp/swig-wrapper/./CSharp/UniMRCP-NET.so ~/src/git/unimrcp_experiments
-sudo /sbin/ldconfig
 EOF
 
