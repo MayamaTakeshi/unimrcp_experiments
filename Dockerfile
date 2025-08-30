@@ -9,7 +9,7 @@ ARG USER_GID=$USER_UID
 
 SHELL ["/bin/bash", "--login", "-c"]
 
-RUN apt-get update && apt-get install -y autoconf automake build-essential cmake curl git-core gnupg jq libavdevice-dev libboost-dev libncurses5-dev libopencore-amrnb-dev libopencore-amrwb-dev libopus-dev libpcap-dev libsdl2-dev libspeex-dev libssl-dev libswscale-dev libtiff-dev libtool libtool-bin libv4l-dev libvo-amrwbenc-dev locales nano net-tools ngrep pkg-config python-dev rsyslog ruby subversion sudo swig tcpdump tmux tree uuid-dev vim wget tmuxinator xmlstarlet
+RUN apt-get update && apt-get install -y autoconf automake build-essential cmake curl git-core gnupg jq libavdevice-dev libboost-dev libncurses5-dev libopencore-amrnb-dev libopencore-amrwb-dev libopus-dev libpcap-dev libsdl2-dev libspeex-dev libssl-dev libswscale-dev libtiff-dev libtool libtool-bin libv4l-dev libvo-amrwbenc-dev locales nano net-tools ngrep pkg-config python-dev rsyslog ruby subversion sudo swig tcpdump tmux tree uuid-dev vim wget tmuxinator xmlstarlet default-jdk doxygen mono-complete libxml2-utils
  
 # install sip-lab deps
 RUN apt-get -y install build-essential automake autoconf libtool libspeex-dev libopus-dev libsdl2-dev libavdevice-dev libswscale-dev libv4l-dev libopencore-amrnb-dev libopencore-amrwb-dev libvo-amrwbenc-dev libvo-amrwbenc-dev libboost-dev libtiff-dev libpcap-dev libssl-dev uuid-dev flite-dev cmake git wget 
@@ -17,12 +17,13 @@ RUN apt-get -y install build-essential automake autoconf libtool libspeex-dev li
 # install sngrep deps
 RUN apt-get -y install libpcap-dev libncurses5 libssl-dev libncursesw5-dev libpcre2-dev libz-dev
 
+RUN mkdir -p /usr/local/src/git
+
 RUN <<EOF
 set -o errexit
 set -o nounset
 set -o pipefail
 
-mkdir -p /usr/local/src/git
 cd /usr/local/src/git
 git clone https://github.com/MayamaTakeshi/sngrep
 cd sngrep/
@@ -53,8 +54,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-mkdir -p /root/tmp/
-cd /root/tmp
+cd /usr/local/src/git/
 git clone https://github.com/MayamaTakeshi/unimrcp.git
 cd unimrcp
 git checkout 9913f23691b3a1b8a7e84be5ba25478031352158
@@ -70,14 +70,25 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-cd /root/tmp/
+cd /usr/local/src/git
 git clone https://github.com/MayamaTakeshi/swig-wrapper.git
 cd swig-wrapper
 git checkout 6e5becaea38418f8ad9909389bba3598b971f39c
 rm -f CMakeCache.txt
-cmake -D APR_LIBRARY=/usr/local/apr/lib/libapr-1.so -D APR_INCLUDE_DIR=/usr/local/apr/include/apr-1 -D APU_LIBRARY=/usr/local/apr/lib/libaprutil-1.so -D APU_INCLUDE_DIR=/usr/local/apr/include/apr-1 -D UNIMRCP_SOURCE_DIR=~/src/unimrcp -D SOFIA_INCLUDE_DIRS=/usr/include/sofia-sip-1.12 -D WRAP_CPP=OFF -D WRAP_JAVA=OFF -D BUILD_C_EXAMPLE=OFF .
+cmake \
+  -D APR_LIBRARY=/usr/local/apr/lib/libapr-1.so \
+  -D APR_INCLUDE_DIR=/usr/local/apr/include/apr-1 \
+  -D APU_LIBRARY=/usr/local/apr/lib/libaprutil-1.so \
+  -D APU_INCLUDE_DIR=/usr/local/apr/include/apr-1 \
+  -D WRAP_CPP=ON \
+  -D WRAP_CSHARP=ON \
+  -D WRAP_JAVA=ON \
+  -D WRAP_PYTHON=ON \
+  -D BUILD_C_EXAMPLE=ON \
+  .
 make
-cp -f /root/tmp/swig-wrapper/Python/_UniMRCP.so /root/tmp/swig-wrapper/Python/wrapper
+cp ./Python/wrapper/UniMRCP.py /usr/lib/python2.7/dist-packages
+cp ./Python/_UniMRCP.so /usr/lib/python2.7/dist-packages
 
 sudo /sbin/ldconfig
 EOF
@@ -144,5 +155,20 @@ export PS1='\u@\h:\W\$ '
 export TZ=Asia/Tokyo
 export TERM=xterm-256color
 . ~/.nvm/nvm.sh
+EOF
+
+RUN <<EOF
+set -o errexit
+set -o nounset
+set -o pipefail
+
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.1
+echo '. "$HOME/.asdf/asdf.sh"' >> ~/.bashrc
+echo '. "$HOME/.asdf/completions/asdf.bash"' >> ~/.bashrc
+source ~/.bashrc
+asdf plugin add rust
+asdf install rust 1.89.0
+asdf global rust 1.89.0
 EOF
 

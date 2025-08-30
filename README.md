@@ -2,7 +2,7 @@
 
 ## Overview
 
-Here we have a Dockerfile to create a container that will host unimrcp and swig-wrapper.
+Here we have a Dockerfile to create a container that will host unimrcp and swig-wrapper (modules to permit to call unimrcp library using python, java, csharp).
 
 ## Preparation
 
@@ -34,7 +34,7 @@ Do:
 ./tmux_session.sh
 ```
 
-The above will open a tmux session and will start unimrcpserver and sngrep with MRCP parsing support.
+The above will open a tmux session as defined in tmux_session.yml and will start unimrcpserver and sngrep with MRCP parsing support.
 
 ## Testing with mrcp_client:
 
@@ -49,9 +49,11 @@ or Speech Recog:
 node speechrecog_client.js 127.0.0.1 8060 en-US artifacts/hello_there.wav builtin:speech/transcribe
 ```
 
-However the above will actually generate dummy results as unimrcpserver is configured to use the demo synth and demo recog plugins.
+However the above will actually generate dummy results as unimrcpserver is configured to use the demo synth and demo recog plugins which don't do real processing of the requests.
 
-## Testing with umc
+## Testing with umc and unimrcpclient
+
+These are MRCP clients that come with unimrcp.
 
 Inside the container you can test with umc. Start it like this:
 ```
@@ -67,15 +69,22 @@ or
 run recog
 ```
 
+Check the messages exchanged at window 'sngrep2'.
+
+You can also use unimrcpclient and do the same commands (I don't know what is the difference between umc and unimcrpclient).
+
 # Building minimal_app
 
-To build the minimal_app (the app does nothing. It is just a build smoke test to confirm we can compile and link against unimrcp libs) do:
-```
+We have a minimal app code showing how to compile and link against the unimrcp library.
 
+The app does nothing. It is just a build smoke test to confirm we can compile and link against unimrcp libs.
+
+To build it:
+```
 cd minimal_app/
 rm CMakeCache.txt CMakeFiles/ cmake_install.cmake -fr
 cmake -D USER=`whoami` .
-sudo make
+make
 ```
 Sample execution:
 
@@ -98,7 +107,7 @@ MayamaTakeshi@takeshi-desktop:minimal_app$ cmake -D USER=`whoami` .
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /home/MayamaTakeshi/src/git/unimrcp_experiments/minimal_app
-MayamaTakeshi@takeshi-desktop:minimal_app$ sudo make
+MayamaTakeshi@takeshi-desktop:minimal_app$ make
 Scanning dependencies of target app
 [ 50%] Building C object CMakeFiles/app.dir/main.c.o
 [100%] Linking C executable app
@@ -118,9 +127,15 @@ OK
 
 ## Testing with swig-wrapper
 
+Swig is a tool that generates wrappers around C/C++ libraries so that they can be called by other programming languages.
+
+The swig-wrapper for unimrcp was installed and built at /usr/local/src/git/swig-wrapper.
+
+### Python
+
 To test Speech Synth with the swig-wrapper for python do:
 ```
-sudo PYTHONPATH=/root/tmp/swig-wrapper/Python/wrapper ~/src/git/unimrcp_experiments/UniSynth.py "hello"
+./UniSynth.py "hello"
 ```
 The above will produce a file UniSynth.pcm that you can move to a folder visible to the host and then you can use 
 ```
@@ -130,10 +145,82 @@ in the host to hear it.
 
 Then to test Speech Recog with the swig-wrapper for python do:
 ```
-sudo PYTHONPATH=/root/tmp/swig-wrapper/Python/wrapper ~/src/git/unimrcp_experiments/UniRecog.py /usr/local/unimrcp/data/grammar.xml UniSynth.pcm
+./UniRecog.py /usr/local/unimrcp/data/grammar.xml UniSynth.pcm
 ```
 
 But again, the output for both synth and recog is bogus as we are using the demo plugins.
 
+### Java
+
+```
+sudo su
+cd /usr/local/src/git/swig-wrapper/Java/
+./UniSynth.sh hello
+```
+
+Obs: the communication with unimrcp will not be captured by sngrep2 because this uses MRCP v1 which doesn't use SIP as session negotiation protocol.
+
+### CSharp
+```
+sudo su
+cd /usr/local/src/git/swig-wrapper/CSharp
+./UniSynth.sh hello
+```
+
+However, it currently fails:
+```
+root@takeshi-desktop:/usr/local/src/git/swig-wrapper/CSharp# ./UniSynth.sh hello
+Mono runtime: /usr/bin/mono
+Using C# compiler: /usr/bin/mcs
+Press enter to compile UniSynth
+wrapper/UniMRCPPINVOKE.cs(322,110): error CS0246: The type or namespace name `In' could not be found. Are you missing an assembly reference?
+wrapper/UniMRCPPINVOKE.cs(322,114): error CS0246: The type or namespace name `MarshalAs' could not be found. Are you missing an assembly reference?
+wrapper/UniMRCPPINVOKE.cs(349,118): error CS0246: The type or namespace name `In' could not be found. Are you missing an assembly reference?
+wrapper/UniMRCPPINVOKE.cs(349,122): error CS0246: The type or namespace name `MarshalAs' could not be found. Are you missing an assembly reference?
+wrapper/UniMRCPPINVOKE.cs(361,81): error CS0246: The type or namespace name `In' could not be found. Are you missing an assembly reference?
+wrapper/UniMRCPPINVOKE.cs(361,85): error CS0246: The type or namespace name `MarshalAs' could not be found. Are you missing an assembly reference?
+wrapper/UniMRCPPINVOKE.cs(364,81): error CS0246: The type or namespace name `In' could not be found. Are you missing an assembly reference?
+wrapper/UniMRCPPINVOKE.cs(364,85): error CS0246: The type or namespace name `MarshalAs' could not be found. Are you missing an assembly reference?
+wrapper/UniMRCPPINVOKE.cs(367,81): error CS0246: The type or namespace name `In' could not be found. Are you missing an assembly reference?
+wrapper/UniMRCPPINVOKE.cs(367,85): error CS0246: The type or namespace name `MarshalAs' could not be found. Are you missing an assembly reference?
+wrapper/UniMRCPPINVOKE.cs(370,81): error CS0246: The type or namespace name `In' could not be found. Are you missing an assembly reference?
+wrapper/UniMRCPPINVOKE.cs(370,85): error CS0246: The type or namespace name `MarshalAs' could not be found. Are you missing an assembly reference?
+wrapper/UniMRCPPINVOKE.cs(376,126): error CS0246: The type or namespace name `In' could not be found. Are you missing an assembly reference?
+wrapper/UniMRCPPINVOKE.cs(376,130): error CS0246: The type or namespace name `MarshalAs' could not be found. Are you missing an assembly reference?
+wrapper/UniMRCPPINVOKE.cs(379,126): error CS0246: The type or namespace name `In' could not be found. Are you missing an assembly reference?
+wrapper/UniMRCPPINVOKE.cs(379,130): error CS0246: The type or namespace name `MarshalAs' could not be found. Are you missing an assembly reference?
+wrapper/UniMRCPPINVOKE.cs(382,126): error CS0246: The type or namespace name `In' could not be found. Are you missing an assembly reference?
+wrapper/UniMRCPPINVOKE.cs(382,130): error CS0246: The type or namespace name `MarshalAs' could not be found. Are you missing an assembly reference?
+wrapper/UniMRCPPINVOKE.cs(385,126): error CS0246: The type or namespace name `In' could not be found. Are you missing an assembly reference?
+wrapper/UniMRCPPINVOKE.cs(385,130): error CS0246: The type or namespace name `MarshalAs' could not be found. Are you missing an assembly reference?
+wrapper/UniMRCPPINVOKE.cs(445,110): error CS0246: The type or namespace name `Out' could not be found. Are you missing an assembly reference?
+wrapper/UniMRCPPINVOKE.cs(445,115): error CS0246: The type or namespace name `MarshalAs' could not be found. Are you missing an assembly reference?
+wrapper/UniMRCPPINVOKE.cs(553,117): error CS0246: The type or namespace name `Out' could not be found. Are you missing an assembly reference?
+wrapper/UniMRCPPINVOKE.cs(553,122): error CS0246: The type or namespace name `MarshalAs' could not be found. Are you missing an assembly reference?
+wrapper/UniMRCPPINVOKE.cs(562,117): error CS0246: The type or namespace name `In' could not be found. Are you missing an assembly reference?
+wrapper/UniMRCPPINVOKE.cs(562,121): error CS0246: The type or namespace name `MarshalAs' could not be found. Are you missing an assembly reference?
+Compilation failed: 26 error(s), 0 warnings
+Error compiling UniSynth
+```
+### Sample apps in C and Cpp
+The swig-wrapper repo also contains samples in C and Cpp
+
+#### C
+
+```
+sudo su
+cd /usr/local/src/git/swig-wrapper/C
+./UniSynth_C hello
+```
+Obs: the communication with unimrcp will not be captured by sngrep2 because this uses MRCP v1 which doesn't use SIP as session negotiation protocol.
+
+#### Cpp
+```
+sudo su
+cd /usr/local/src/git/swig-wrapper/Cpp
+./UniSynth_Cpp hello
+```
+
+Obs: the communication with unimrcp will not be captured by sngrep2 because this uses MRCP v1 which doesn't use SIP as session negotiation protocol.
 
 
