@@ -37,12 +37,12 @@ The above will open a tmux session as defined in tmux_session.yml.
 There will be one window called 'unimrcpserver' that will have unimrcpserver running and outputting logs.
 
 There will be another window called 'bin+sngrep2' with 2 panes:
-  - one panel will be open at /usr/local/unimrcp/bin
-  - the other panel will be running sngrep2
+  - one pane will be open at /usr/local/unimrcp/bin
+  - the other pane will be running sngrep2
 
 And there will be another window called "root" with 2 panes:
-  - one panel will be open at the root of the repo ~/src/git/unimrcp_experiments
-  - the other panel will be running sngrep2
+  - one pane will be open at the root of the repo ~/src/git/unimrcp_experiments
+  - the other pane will be running sngrep2
 
 The unimrcp is installed on /usr/local/unimrcp. In addition to the bin folder with the executables, you will also see subfolders for configuration (conf) and plugins.
 
