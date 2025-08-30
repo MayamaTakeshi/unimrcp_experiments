@@ -2,7 +2,7 @@
 
 ## Overview
 
-Here we have a Dockerfile to create a container that will host unimrcp and swig-wrapper (modules to permit to call unimrcp library using python, java, csharp).
+Here we have a Dockerfile to create a container that will host unimrcp and swig-wrapper (modules to permit to call unimrcp library using python, java, c#).
 
 This will permit to get some experience with unimrcp.
 
@@ -214,6 +214,8 @@ wrapper/UniMRCPPINVOKE.cs(562,121): error CS0246: The type or namespace name `Ma
 Compilation failed: 26 error(s), 0 warnings
 Error compiling UniSynth
 ```
+But it is OK: this is not important fo this tutorial.
+
 ### Sample apps in C and Cpp
 The swig-wrapper repo also contains samples in C and Cpp
 
