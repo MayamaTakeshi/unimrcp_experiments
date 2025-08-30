@@ -61,8 +61,10 @@ git checkout 9913f23691b3a1b8a7e84be5ba25478031352158
 ./bootstrap
 ./configure
 make
-sudo rm -fr /usr/local/unimrcp # need to remove existing files
-sudo make install
+rm -fr /usr/local/unimrcp # need to remove existing files
+make install
+sed -i -r 's|<ip type="auto"/>|<ip type="lo"/>|' /usr/local/unimrcp/conf/unimrcpserver.xml
+sed -i -r 's|<ip type="auto"/>|<ip type="lo"/>|' /usr/local/unimrcp/conf/unimrcpclient.xml
 EOF
 
 RUN <<EOF
@@ -162,11 +164,15 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.1
+
 echo '. "$HOME/.asdf/asdf.sh"' >> ~/.bashrc
 echo '. "$HOME/.asdf/completions/asdf.bash"' >> ~/.bashrc
-source ~/.bashrc
+
+# Source the asdf script directly within the same RUN block to get access to asdf ('source ~/.bashrc' will not work)
+source "$HOME/.asdf/asdf.sh"
+source "$HOME/.asdf/completions/asdf.bash"
+
 asdf plugin add rust
 asdf install rust 1.89.0
 asdf global rust 1.89.0

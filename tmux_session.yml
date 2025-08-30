@@ -3,14 +3,16 @@ root: ~/src/git/unimrcp_experiments
 
 windows:
   - unimrcpserver:
-    - sudo sed -i -r 's|<ip type="auto"/>|<ip type="lo"/>|' /usr/local/unimrcp/conf/unimrcpserver.xml
-    - sudo sed -i -r 's|<ip type="auto"/>|<ip type="lo"/>|' /usr/local/unimrcp/conf/unimrcpclient.xml
-    - cp -f ~/src/git/swig-wrapper/Python/*.so ~/src/git/swig-wrapper/Python/wrapper/
     - cd /usr/local/unimrcp/bin
-    - ./unimrcpserver
-  - "unimrcp/bin":
-    - cd /usr/local/unimrcp/bin
-  - sngrep2:
-    - sudo sngrep2 -d any
-  - dev:
-    - cd ~/src/git/unimrcp_experiments
+    - sudo ./unimrcpserver
+  - "bin+sngrep2":
+      layout: even-vertical
+      panes:
+        - cd /usr/local/unimrcp/bin 
+        - sudo sngrep2 -d any
+  - root:
+      layout: even-vertical
+      panes:
+        - cd ~/src/git/unimrcp_experiments
+        - sudo sngrep2 -d any
+
