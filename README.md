@@ -237,7 +237,7 @@ Obs: the communication with unimrcp will not be captured by sngrep2 because this
 
 ## Testing plugins written in rust
 
-There are some plugins written in rust available at github:
+There are some plugins written in rust available on github:
 
   https://github.com/akmitrich/rsunimrcp_tts # equivalent of demosynth plugin.
 
