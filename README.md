@@ -8,6 +8,8 @@ This will permit to get some experience with unimrcp.
 
 The unimrcp is an MRCP server that can be extended with plugins that permit to access TTS and ASR services from providers like google, amazon, azure etc.
 
+Obs: however, in this tutorial we will not test with such providers as it would require installing the plugins and obtaining a plugin license.
+
 ## Building the image
 
 To build the container image:
