@@ -217,10 +217,10 @@ Error compiling UniSynth
 ```
 But it is OK: this is not important fo this tutorial.
 
-### Sample apps in C and Cpp
+## Sample apps in C and Cpp
 The swig-wrapper repo also contains samples in C and Cpp
 
-#### C
+### C
 
 ```
 sudo su
@@ -229,7 +229,7 @@ cd /usr/local/src/git/swig-wrapper/C
 ```
 Obs: the communication with unimrcp will not be captured by sngrep2 because this uses MRCP v1 which doesn't use SIP as session negotiation protocol.
 
-#### Cpp
+### Cpp
 ```
 sudo su
 cd /usr/local/src/git/swig-wrapper/Cpp
