@@ -69,9 +69,8 @@ node speechrecog_client.js 127.0.0.1 8060 en-US artifacts/hello_there.wav builti
 
 These are MRCP clients that come as part of unimrcp.
 
-Switch to the window "bin+sngrep2" and start umc like this:
+Switch to the window "bin+sngrep2" and start umc this way:
 ```
-cd /usr/local/unimrcp/bin
 ./umc
 ```
 Then execute commands like:
@@ -147,7 +146,7 @@ The swig-wrapper for unimrcp was installed and built at /usr/local/src/git/swig-
 
 ### Python
 
-To test Speech Synth with the swig-wrapper for python do:
+To test Speech Synth with the swig-wrapper for python, switch to the "root" window and do:
 ```
 ./UniSynth.py "hello"
 ```
