@@ -142,7 +142,7 @@ OK
 
 Swig is a tool that generates wrappers around C/C++ libraries so that they can be called by other programming languages.
 
-The swig-wrapper for unimrcp was installed and built at /usr/local/src/git/swig-wrapper
+The swig-wrapper for unimrcp (developed by the unimrcp author) was installed and built at /usr/local/src/git/swig-wrapper
 
 ### Python
 
