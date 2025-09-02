@@ -171,6 +171,7 @@ cd /usr/local/src/git/swig-wrapper/Java/
 ```
 
 Obs: the communication with unimrcp will not be captured by sngrep2 because this uses MRCP v1 which doesn't use SIP as session negotiation protocol.
+But you can view the messages in the unimrcp output.
 
 ### CSharp
 ```
