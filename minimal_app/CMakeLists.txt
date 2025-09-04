@@ -19,7 +19,7 @@ target_include_directories(app PUBLIC
 # strangely, "~/src" fails in targeet_link_library so we must pass the USER
 
 target_link_libraries(app PUBLIC
-   "/home/${USER}/src/git/unimrcp/libs/apr-toolkit/.libs/libaprtoolkit.a"
+   "/usr/local/src/git/unimrcp/libs/apr-toolkit/.libs/libaprtoolkit.a"
    "/usr/local/apr/lib/libaprutil-1.so"
    "/usr/local/apr/lib/libapr-1.so"
    )

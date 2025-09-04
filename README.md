@@ -96,7 +96,7 @@ To build it:
 ```
 cd minimal_app/
 rm CMakeCache.txt CMakeFiles/ cmake_install.cmake -fr
-cmake -D USER=`whoami` .
+cmake .
 make
 ```
 Sample execution:
@@ -104,7 +104,7 @@ Sample execution:
 ```
 MayamaTakeshi@takeshi-desktop:unimrcp_experiments$ cd minimal_app/
 MayamaTakeshi@takeshi-desktop:minimal_app$ rm CMakeCache.txt CMakeFiles/ cmake_install.cmake -fr
-MayamaTakeshi@takeshi-desktop:minimal_app$ cmake -D USER=`whoami` .
+MayamaTakeshi@takeshi-desktop:minimal_app$ cmake .
 -- The C compiler identification is GNU 10.2.1
 -- The CXX compiler identification is GNU 10.2.1
 -- Detecting C compiler ABI info
